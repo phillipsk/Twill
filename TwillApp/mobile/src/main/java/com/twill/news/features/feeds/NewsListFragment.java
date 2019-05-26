@@ -1,7 +1,5 @@
 package com.twill.news.features.feeds;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.arch.lifecycle.LifecycleFragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,14 +10,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.twill.news.R;
-import com.twill.news.databinding.FragmentNewssourceListBinding;
+import com.twill.news.data.local.dao.ArticlesDao;
+import com.twill.news.data.local.dao.SourcesDao;
 import com.twill.news.data.local.entity.Sources;
+import com.twill.news.data.remote.NewsAPIDBService;
+import com.twill.news.data.remote.NewsAPIRepository;
+import com.twill.news.databinding.FragmentNewssourceListBinding;
 import com.twill.news.features.detail.NewsListActivity;
-import com.twill.news.utils.HideShowScrollListener;
-
-import javax.inject.Inject;
-
-import dagger.android.support.AndroidSupportInjection;
 
 /**
  *  Created by Anil on 6/7/2017.
@@ -27,9 +24,18 @@ import dagger.android.support.AndroidSupportInjection;
 
 public class NewsListFragment extends LifecycleFragment implements NewsListCallback {
 
-    @Inject
-    NewsSourcesListViewModel newsSourcesListViewModel;
+//    @Inject
+//    NewsSourcesListViewModel newsSourcesListViewModel;
+    private NewsSourcesListViewModel newsSourcesListViewModel;
+    private NewsAPIRepository newsAPIRepository;
+
     FragmentNewssourceListBinding binding;
+    private ArticlesDao articlesDao;
+    private SourcesDao sourcesDao;
+    private NewsAPIDBService newsAPIDBService;
+
+    public NewsListFragment() {
+    }
 
     public static NewsListFragment newInstance() {
         Bundle args = new Bundle();
@@ -41,7 +47,8 @@ public class NewsListFragment extends LifecycleFragment implements NewsListCallb
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        AndroidSupportInjection.inject(this);
+//        AndroidSupportInjection.inject(this);
+//        newsSourcesListViewModel = new NewsSourcesListViewModel(newsAPIRepository);
     }
 
     @Nullable
@@ -83,9 +90,17 @@ public class NewsListFragment extends LifecycleFragment implements NewsListCallb
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        newsSourcesListViewModel
-                .getNewsSources()
-                .observe(this, listResource -> binding.setResource(listResource));
+/*        final ArticlesDao articlesDao = null;
+        final SourcesDao sourcesDao = null;
+        final NewsAPIDBService newsAPIDBService = null;*/
+
+        newsAPIRepository = new NewsAPIRepository(articlesDao,sourcesDao,newsAPIDBService);
+
+                newsSourcesListViewModel = new NewsSourcesListViewModel(newsAPIRepository);
+
+                newsSourcesListViewModel
+                        .getNewsSources()
+                        .observe(this, listResource -> binding.setResource(listResource));
     }
 
 

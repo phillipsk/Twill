@@ -7,7 +7,7 @@ android {
         config {
             keyAlias 'twill'
             keyPassword 'twill@1234'
-            storeFile file('C:/Users/ankumar/Documents/Android Architucture/Twill/TwillApp/twill_signature.jks')
+//            storeFile file('s')
             storePassword 'twill@1234'
         }
     }

@@ -4,21 +4,14 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.twill.news.R;
 import com.twill.news.databinding.ActivityHomeBinding;
-
-import javax.inject.Inject;
-
-import dagger.android.AndroidInjection;
-import dagger.android.AndroidInjector;
-import dagger.android.DispatchingAndroidInjector;
-import dagger.android.support.HasSupportFragmentInjector;
 
 /*
 public class HomeActivity extends AppCompatActivity implements LifecycleRegistryOwner ,Observer<Location>{
@@ -99,10 +92,10 @@ public class HomeActivity extends AppCompatActivity implements LifecycleRegistry
 }
 */
 
-public class HomeActivity extends AppCompatActivity implements HasSupportFragmentInjector {
+public class HomeActivity extends AppCompatActivity /*implements HasSupportFragmentInjector*/ {
 
-    @Inject
-    DispatchingAndroidInjector<Fragment> fragmentAndroidInjector;
+//    @Inject
+//    DispatchingAndroidInjector<Fragment> fragmentAndroidInjector;
 
     private ActivityHomeBinding binding;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -123,7 +116,8 @@ public class HomeActivity extends AppCompatActivity implements HasSupportFragmen
     };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        AndroidInjection.inject(this);
+        Log.v("HomeActivity","app on create");
+//        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home);
         binding.navigation.setVisibility(View.GONE);
@@ -144,8 +138,8 @@ public class HomeActivity extends AppCompatActivity implements HasSupportFragmen
         return binding;
     }
 
-    @Override
+/*    @Override
     public AndroidInjector<Fragment> supportFragmentInjector() {
         return fragmentAndroidInjector;
-    }
+    }*/
 }
